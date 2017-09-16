@@ -1,0 +1,58 @@
+﻿<Window x:Class="MultiStepTimer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MultiStepTimer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+
+    <DockPanel LastChildFill="True">
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel LastChildFill="True"></DockPanel>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem DockPanel.Dock="Left">
+                <TextBlock x:Name="LableSize">foobar</TextBlock>
+            </StatusBarItem>
+            <Separator DockPanel.Dock="Left"/>
+            <StatusBarItem DockPanel.Dock="Right">
+                <ProgressBar x:Name="MainProgressBar" MinWidth="100" MinHeight="16"/>
+            </StatusBarItem>
+            <Separator DockPanel.Dock="Right"/>
+            <StatusBarItem/> <!-- EMPTY -->
+        </StatusBar>
+        <DockPanel Margin="10">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="ButtonStartStop" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Content="Start" IsDefault="True" Height="19" VerticalAlignment="Top" Click="ButtonStartStop_Click" Margin="5"/>
+            </Grid>
+            <Slider x:Name="slider" DockPanel.Dock="Top" AutoToolTipPlacement="TopLeft" Maximum="9" Minimum="1" SmallChange="1" TickPlacement="Both" IsSnapToTickEnabled="True" Value="4" ValueChanged="slider_ValueChanged" Loaded="slider_Loaded"></Slider>
+            <Grid x:Name="MainGrid" DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+            </Grid>
+        </DockPanel>
+    </DockPanel>
+</Window>
