@@ -46,11 +46,13 @@ namespace MultiStepTimer
         private void slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Controls.Size = (int) e.NewValue;
+            Controls.Update(0);
         }
 
         private void slider_Loaded(object sender, RoutedEventArgs e)
         {
             Controls.Size = (int) (sender as Slider).Value;
+            Controls.Update(0);
         }
 
         private bool _isRunning = false;
@@ -60,6 +62,7 @@ namespace MultiStepTimer
             {
                 Timer.Stop();
                 this.ButtonStartStop.Content = "Start";
+                this.ButtonRestart.IsEnabled = false;
                 this.Topmost = false;
                 this.AllowDrop = true;
                 this.ButtonOpenConfig.IsEnabled = true;
@@ -70,6 +73,7 @@ namespace MultiStepTimer
                 Timer.Start();
                 this.ButtonStartStop.Content = "Stop";
                 this.ButtonOpenConfig.IsEnabled = false;
+                this.ButtonRestart.IsEnabled = true;
                 this.AllowDrop = false;
                 this.Topmost = true;
                 Controls.Disable();
@@ -121,6 +125,12 @@ namespace MultiStepTimer
                 return;
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             LoadConfig(files[0]);
+        }
+        
+        private void ButtonRestart_Click(object sender, RoutedEventArgs e)
+        {
+            Timer.Stop();
+            Timer.Start();
         }
     }
 }

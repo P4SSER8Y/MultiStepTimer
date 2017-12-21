@@ -14,15 +14,8 @@
                     <DockPanel LastChildFill="True"></DockPanel>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
-            <StatusBarItem DockPanel.Dock="Left">
-                <Label x:Name="LabelStatus" Content="Label"/>
-            </StatusBarItem>
-            <Separator DockPanel.Dock="Left"/>
             <StatusBarItem DockPanel.Dock="Right">
-                <ProgressBar x:Name="MainProgressBar" MinWidth="100" MinHeight="16"/>
             </StatusBarItem>
-            <Separator DockPanel.Dock="Right"/>
-            <StatusBarItem/>
             <!-- EMPTY -->
         </StatusBar>
         <DockPanel Margin="10">
@@ -33,13 +26,22 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="ButtonOpenConfig" Grid.Row="0" Grid.Column="0" Content="Load" IsDefault="False" Height="19" VerticalAlignment="Top" Click="ButtonOpenConfig_Click" Margin="5"/>
-                <Button x:Name="ButtonStartStop" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Content="Start" IsDefault="True" Height="19" VerticalAlignment="Top" Click="ButtonStartStop_Click" Margin="5"/>
-                <!--<Viewbox Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center">-->
-                    <Label x:Name="LabelCount" Content="0" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <!--</Viewbox>-->
+                <Button x:Name="ButtonOpenConfig" Grid.Row="0" Grid.Column="0" Content="Load" IsDefault="False" Height="19" VerticalAlignment="Center" Click="ButtonOpenConfig_Click" Margin="5"/>
+                <Button x:Name="ButtonStartStop" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Content="Start" IsDefault="True" Height="19" VerticalAlignment="Center" Click="ButtonStartStop_Click" Margin="5"/>
+                <Button x:Name="ButtonRestart" Grid.Row="0" Grid.Column="3" Content="Restart" IsDefault="False" Height="19" VerticalAlignment="Center" Click="ButtonRestart_Click" Margin="5" IsEnabled="False"/>
             </Grid>
             <Slider x:Name="slider" DockPanel.Dock="Top" AutoToolTipPlacement="TopLeft" Maximum="9" Minimum="1" SmallChange="1" TickPlacement="Both" IsSnapToTickEnabled="True" Value="4" ValueChanged="slider_ValueChanged" Loaded="slider_Loaded"></Slider>
+
+            <ProgressBar x:Name="MainProgressBar" DockPanel.Dock="Bottom" MinWidth="100" MinHeight="16"/>
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="LabelStatus" Content="TIME" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="48"/>
+                <Label x:Name="LabelCount" Content="0" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="48" FontFamily="{DynamicResource {x:Static SystemFonts.MessageFontFamilyKey}}"/>
+            </Grid>
             <Grid x:Name="MainGrid" DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
