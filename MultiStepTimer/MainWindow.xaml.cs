@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,22 +21,26 @@ namespace MultiStepTimer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int test;
         public MainWindow()
         {
             Controls.Parent = this;
             InitializeComponent();
             Controls.AfterParentInit();
             ReadConfig();
+
+            var args = Environment.GetCommandLineArgs();
+            if (args.Count() > 1)
+                LoadConfig(args[1]);
         }
 
         private void ReadConfig()
         {
             this.slider.Value = 2;
-            Controls.Timeout[0].Value = 1;
+            Controls.Title[0].Value = "Hello";
+            Controls.Title[1].Value = "World";
+            Controls.Timeout[0].Value = 2;
             Controls.Timeout[1].Value = 1;
-            Controls.RemainTime[1].Value = 0.5;
-            Controls.Update(1.5);
+            Controls.Update(0);
         }
 
         private void slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -55,16 +60,66 @@ namespace MultiStepTimer
             {
                 Timer.Stop();
                 this.ButtonStartStop.Content = "Start";
+                this.Topmost = false;
+                this.ButtonOpenConfig.IsEnabled = true;
                 Controls.Enable();
             }
             else
             {
                 Timer.Start();
                 this.ButtonStartStop.Content = "Stop";
+                this.ButtonOpenConfig.IsEnabled = false;
+                this.Topmost = true;
                 Controls.Disable();
             }
             _isRunning = !_isRunning;
         }
-        
+
+        private void ButtonOpenConfig_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "Yaml配置文件(*.yaml)|*.yaml";
+            dialog.ValidateNames = true;
+            dialog.CheckFileExists = true;
+            dialog.CheckPathExists = true;
+            dialog.Multiselect = false;
+            var flag = dialog.ShowDialog();
+            if (flag == true)
+                LoadConfig(dialog.FileName);
+        }
+
+        public void LoadConfig(string filename)
+        {
+            Console.WriteLine(filename);
+            Config cfg;
+            try
+            {
+                cfg = ConfigReader.Read(filename);
+            }
+            catch
+            {
+                return;
+            }
+            
+
+            var n = cfg.items.Count();
+            if (n < 1)
+                return;
+            this.slider.Value = n;
+            for (var i = 0; i < n; i++)
+            {
+                Controls.Title[i].Value = cfg.items[i].title;
+                Controls._timeoutConfig[i].Text = $"{cfg.items[i].timeout}";
+            }
+            Controls.Update(0);
+        }
+
+        private void Window_Drop(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+                return;
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            LoadConfig(files[0]);
+        }
     }
 }

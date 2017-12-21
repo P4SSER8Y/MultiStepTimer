@@ -43,11 +43,14 @@ namespace MultiStepTimer
         private static readonly TextBox[] _titles = new TextBox[9];
         private static readonly ProgressBar[] _progressBars = new ProgressBar[9];
         private static readonly Label[] _remainTime = new Label[9];
-        private static readonly TextBox[] _timeoutConfig = new TextBox[9];
+        public static readonly TextBox[] _timeoutConfig = new TextBox[9];
 
+        public static BindingValue<string>[] Title = new BindingValue<string>[9];
         public static BindingValue<double>[] RemainTime = new BindingValue<double>[9];
         public static BindingValue<double>[] Timeout = new BindingValue<double>[9];
 
+        public static BindingValue<string> Count = new BindingValue<string>();
+        public static BindingValue<string> Status = new BindingValue<string>();
         public static BindingValue<double> TotalRemaining = new BindingValue<double>();
         public static BindingValue<double> TaskbarProgress = new BindingValue<double>();
 
@@ -82,11 +85,25 @@ namespace MultiStepTimer
                 throw new NotImplementedException();
             }
         }
-        
+
+        class TimeConverter : IValueConverter
+        {
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                return $"{(double)value:F1}";
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         static Controls()
         {
             for (var i = 0; i < 9; i++)
             {
+                Title[i] = new BindingValue<string>() { Value = $"第{i + 1}步" };
                 _titles[i] = new TextBox
                 {
                     Text = $"第{i+1}步",
@@ -97,6 +114,12 @@ namespace MultiStepTimer
                     MinWidth = 80,
                     Margin = new Thickness(1),
                 };
+                var bind = new Binding("Value")
+                {
+                    Source = Title[i],
+                    Mode = BindingMode.TwoWay,
+                };
+                _titles[i].SetBinding(TextBox.TextProperty, bind);
                 Grid.SetColumn(_titles[i], 0);
                 Grid.SetRow(_titles[i], i);
 
@@ -112,13 +135,13 @@ namespace MultiStepTimer
                     Padding = new Thickness(0),
                     BorderThickness = new Thickness(1),
                 };
-                var bind = new Binding("Value")
+                var bindTitle = new Binding("Value")
                 {
                     Source = RemainTime[i],
-                    Mode = BindingMode.OneWay,
+                    Mode = BindingMode.TwoWay,
                     Converter = new RemainingTimeConverter(),
                 };
-                _remainTime[i].SetBinding(Label.ContentProperty, bind);
+                _remainTime[i].SetBinding(Label.ContentProperty, bindTitle);
                 Grid.SetColumn(_remainTime[i], 2);
                 Grid.SetRow(_remainTime[i], i);
 
@@ -193,6 +216,20 @@ namespace MultiStepTimer
                 Mode = BindingMode.OneWay,
             };
             Parent.MainProgressBar.SetBinding(ProgressBar.ValueProperty, bindMainPbar);
+
+            var bindLabelStatus = new Binding("Value")
+            {
+                Source = Status,
+                Mode = BindingMode.TwoWay,
+            };
+            Parent.LabelStatus.SetBinding(Label.ContentProperty, bindLabelStatus);
+
+            var bindLabelCount = new Binding("Value")
+            {
+                Source = Count,
+                Mode = BindingMode.TwoWay,
+            };
+            Parent.LabelCount.SetBinding(Label.ContentProperty, bindLabelCount);
         }
 
         private static double _totalTimeout = 1.0;
@@ -250,10 +287,12 @@ namespace MultiStepTimer
         
         public static void Update(double totalSeconds)
         {
+            var count = (int)Math.Floor(totalSeconds / _totalTimeout);
             var remaining = totalSeconds % _totalTimeout;
-            TotalRemaining.Value = remaining;
-
-
+            TotalRemaining.Value = (count % 2 == 0) ? remaining : _totalTimeout - remaining;
+            Status.Value = $"{(int)Math.Floor(totalSeconds/60):d2}:{totalSeconds%60:00.0}";
+            Count.Value = $"{count:00}";
+            
             for (var i = 0; i < Size; i++)
             {
                 if (remaining > Timeout[i].Value)
