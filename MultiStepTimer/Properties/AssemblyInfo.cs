@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("MultiStepTimer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("HUST")]
 [assembly: AssemblyProduct("MultiStepTimer")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © 2017 P4SSER8Y")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
