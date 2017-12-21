@@ -25,6 +25,7 @@ namespace MultiStepTimer
         {
             Controls.Parent = this;
             InitializeComponent();
+            this.slider.Maximum = App.MaxNumOfSteps;
             Controls.AfterParentInit();
             ReadConfig();
 
@@ -110,6 +111,8 @@ namespace MultiStepTimer
             var n = cfg.items.Count();
             if (n < 1)
                 return;
+            if (n > App.MaxNumOfSteps)
+                n = App.MaxNumOfSteps;
             this.slider.Value = n;
             for (var i = 0; i < n; i++)
             {

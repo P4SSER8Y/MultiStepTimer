@@ -40,14 +40,14 @@ namespace MultiStepTimer
     static class Controls
     {
         public static MainWindow Parent = null;
-        private static readonly TextBox[] _titles = new TextBox[9];
-        private static readonly ProgressBar[] _progressBars = new ProgressBar[9];
-        private static readonly Label[] _remainTime = new Label[9];
-        public static readonly TextBox[] _timeoutConfig = new TextBox[9];
+        private static readonly TextBox[] _titles = new TextBox[App.MaxNumOfSteps];
+        private static readonly ProgressBar[] _progressBars = new ProgressBar[App.MaxNumOfSteps];
+        private static readonly Label[] _remainTime = new Label[App.MaxNumOfSteps];
+        public static readonly TextBox[] _timeoutConfig = new TextBox[App.MaxNumOfSteps];
 
-        public static BindingValue<string>[] Title = new BindingValue<string>[9];
-        public static BindingValue<double>[] RemainTime = new BindingValue<double>[9];
-        public static BindingValue<double>[] Timeout = new BindingValue<double>[9];
+        public static BindingValue<string>[] Title = new BindingValue<string>[App.MaxNumOfSteps];
+        public static BindingValue<double>[] RemainTime = new BindingValue<double>[App.MaxNumOfSteps];
+        public static BindingValue<double>[] Timeout = new BindingValue<double>[App.MaxNumOfSteps];
 
         public static BindingValue<string> Count = new BindingValue<string>();
         public static BindingValue<string> Status = new BindingValue<string>();
@@ -101,9 +101,9 @@ namespace MultiStepTimer
 
         static Controls()
         {
-            for (var i = 0; i < 9; i++)
+            for (var i = 0; i < App.MaxNumOfSteps; i++)
             {
-                Title[i] = new BindingValue<string>() { Value = $"第{i + 1}步" };
+                Title[i] = new BindingValue<string>() { Value = $"Step #{i+1:00}" };
                 _titles[i] = new TextBox
                 {
                     Text = $"第{i+1}步",
@@ -263,7 +263,7 @@ namespace MultiStepTimer
         
         public static void Enable()
         {
-            for (var i = 0; i < 9; i++)
+            for (var i = 0; i < App.MaxNumOfSteps; i++)
             {
                 _titles[i].IsEnabled = true;
                 _remainTime[i].Visibility = Visibility.Collapsed;
@@ -275,7 +275,7 @@ namespace MultiStepTimer
         public static void Disable()
         {
             Sum();
-            for (var i = 0; i < 9; i++)
+            for (var i = 0; i < App.MaxNumOfSteps; i++)
             {
                 _titles[i].IsEnabled = false;
                 _remainTime[i].Visibility = Visibility.Visible;

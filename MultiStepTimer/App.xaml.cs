@@ -13,5 +13,6 @@ namespace MultiStepTimer
     /// </summary>
     public partial class App : Application
     {
+        public const int MaxNumOfSteps = 25;
     }
 }
