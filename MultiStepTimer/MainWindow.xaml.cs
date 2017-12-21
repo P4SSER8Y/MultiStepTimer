@@ -61,6 +61,7 @@ namespace MultiStepTimer
                 Timer.Stop();
                 this.ButtonStartStop.Content = "Start";
                 this.Topmost = false;
+                this.AllowDrop = true;
                 this.ButtonOpenConfig.IsEnabled = true;
                 Controls.Enable();
             }
@@ -69,6 +70,7 @@ namespace MultiStepTimer
                 Timer.Start();
                 this.ButtonStartStop.Content = "Stop";
                 this.ButtonOpenConfig.IsEnabled = false;
+                this.AllowDrop = false;
                 this.Topmost = true;
                 Controls.Disable();
             }
@@ -101,7 +103,6 @@ namespace MultiStepTimer
                 return;
             }
             
-
             var n = cfg.items.Count();
             if (n < 1)
                 return;
